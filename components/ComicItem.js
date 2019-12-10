@@ -1,14 +1,32 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Image, StyleSheet, Dimensions} from 'react-native';
+import Header from './Header';
 
 class ComicItem extends React.Component {
   render() {
+    const {params} = this.props.navigation.state;
     return (
-      <View>
-        <Text>Im Comic Item</Text>
-      </View>
+        <View style={styles.container}>
+          <Header navigation={this.props.navigation}/>
+          <Image style={styles.backgroundImage} source={{uri: params.img}}/>
+        </View>
     )
   }
 }
+
+const window = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+  },
+  backgroundImage: {
+    flex: 1,
+    width: window.width,
+    height: window.height - 40,
+    resizeMode: 'contain'
+  }
+})
 
 export default ComicItem;

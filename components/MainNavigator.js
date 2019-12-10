@@ -3,8 +3,11 @@ import ComicList from './ComicList';
 import ComicItem from './ComicItem';
 
 const MainNavigator = createStackNavigator({
-  Home: {screen: ComicList},
-  Item: {screen: ComicItem}
-})
+      Home: {screen: ComicList},
+      Item: {screen: ComicItem}
+    },
+    {
+      initialRouteName: 'Home'
+    })
 
 export default MainNavigator;

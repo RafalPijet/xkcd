@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import axios from 'axios';
 import ListItem from './ListItem';
+import Header from './Header';
 
 class ComicList extends React.Component {
   state = {
@@ -13,11 +14,11 @@ class ComicList extends React.Component {
   };
 
   componentDidMount() {
-   this.getImages();
+    this.getImages();
   }
 
   getImages = async () => {
-    const {cors, url, last, nextUrl} = this.state;
+    const {cors, url, nextUrl} = this.state;
     let res = await axios.get(`${cors}${url}${nextUrl}`);
     await this.setState({last: res.data.num});
     let counter = this.state.last - 7;
@@ -33,16 +34,15 @@ class ComicList extends React.Component {
   };
 
   render() {
-    const {last, content} = this.state;
+    const {content} = this.state;
     return (
-      <View>
-        <Text>XKCD</Text>
-        <Text>Im comic list {content.length}</Text>
-        {content.map(item => {
-          return <ListItem title={item.title} img={item.img}/>
-        })}
-      
-      </View>
+        <View>
+          <Header navigation={this.props.navigation}/>
+          {content.map(item => {
+            return <ListItem navigation={this.props.navigation} title={item.title} img={item.img}/>
+          })}
+
+        </View>
     )
   }
 }
