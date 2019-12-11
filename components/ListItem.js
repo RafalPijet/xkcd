@@ -11,7 +11,7 @@ class ListItem extends React.Component {
         return (
             <TouchableOpacity style={styles.container} onPress={this.itemHandle.bind(this)}>
                 <Text>{title}</Text>
-                <Image style={{width: 150, height: 150, resizeMode: 'contain'}} source={img}/>
+                <Image style={styles.picture} source={img}/>
             </TouchableOpacity>
         )}
 }
@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderLeftColor: '#000',
         borderLeftWidth: 1
+    },
+    picture: {
+        width: 150,
+        height: 150,
+        resizeMode: 'contain'
     }
 })
 

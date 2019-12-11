@@ -1,34 +1,53 @@
 import React from 'react';
-import {Text, Button, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 const Header = props => {
+    const {hide} = props;
     const backHandling = () => {
         props.navigation.replace('Home');
     }
-    return (
-        <View style={styles.container}>
-            <Button style={styles.back} title='<' onPress={backHandling}></Button>
-            <Text style={styles.title}>XKCD</Text>
-        </View>
-    )
+    if (hide) {
+        const {refresh} = props;
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity onPress={refresh} style={styles.arrowTitle}>
+                    <Image style={styles.icon} source={require('../assets/reload.png')}/>
+                </TouchableOpacity>
+                <Text style={styles.title}>XKCD</Text>
+                <Text style={styles.title}> </Text>
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity onPress={backHandling} style={styles.arrowTitle}>
+                    <Image style={styles.icon} source={require('../assets/back.png')}/>
+                </TouchableOpacity>
+                <Text style={styles.title}>XKCD</Text>
+                <Text style={styles.title}> </Text>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         borderBottomColor: "#000",
         borderBottomWidth: 1
     },
-    back: {
-        flex: 1,
-        width: 100,
-        fontSize: 40,
-        color: '#000'
+    arrowTitle: {
+        paddingLeft: 5
     },
     title: {
         fontSize: 30,
+    },
+    icon: {
+        width: 20,
+        height: 20
     }
 })
 

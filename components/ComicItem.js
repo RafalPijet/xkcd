@@ -7,7 +7,7 @@ class ComicItem extends React.Component {
     const {params} = this.props.navigation.state;
     return (
         <View style={styles.container}>
-          <Header navigation={this.props.navigation}/>
+          <Header hide={false} navigation={this.props.navigation}/>
           <Image style={styles.backgroundImage} source={{uri: params.img}}/>
         </View>
     )
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: window.width,
-    height: window.height - 40,
+    height: window.height - 100,
     resizeMode: 'contain'
   }
 })

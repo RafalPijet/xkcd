@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import axios from 'axios';
 import ListItem from './ListItem';
 import Header from './Header';
+import Loading from './Loading';
 
 class ComicList extends React.Component {
   state = {
@@ -18,7 +19,8 @@ class ComicList extends React.Component {
   }
 
   getImages = async () => {
-    const {cors, url, nextUrl} = this.state;
+    const {cors, url, last, nextUrl} = this.state;
+    this.setState({content: []});
     let res = await axios.get(`${cors}${url}${nextUrl}`);
     await this.setState({last: res.data.num});
     let counter = this.state.last - 7;
@@ -35,15 +37,19 @@ class ComicList extends React.Component {
 
   render() {
     const {content} = this.state;
-    return (
-        <View>
-          <Header navigation={this.props.navigation}/>
-          {content.map(item => {
-            return <ListItem navigation={this.props.navigation} title={item.title} img={item.img}/>
-          })}
+    const {getImages} = this;
 
-        </View>
-    )
+    if (this.state.content.length !== 8) {
+      return <Loading amount={content.length}/>
+    } else {
+      return (
+          <View>
+            <Header refresh={getImages} hide={true} navigation={this.props.navigation}/>
+            {content.map(item => {
+              return <ListItem navigation={this.props.navigation} title={item.title} img={item.img}/>
+            })}
+          </View>
+      )}
   }
 }
 
