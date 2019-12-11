@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, Image, TouchableOpacity, StyleSheet, View} from 'react-native';
 
 class ListItem extends React.Component {
     itemHandle() {
@@ -7,10 +7,13 @@ class ListItem extends React.Component {
         this.props.navigation.replace('Item', {img: img});
     }
     render() {
-        const {title, img} = this.props;
+        const {title, img, day, month, year} = this.props;
         return (
             <TouchableOpacity style={styles.container} onPress={this.itemHandle.bind(this)}>
-                <Text>{title}</Text>
+                <View style={styles.info}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text>{`${day}/${month}/${year}`}</Text>
+                </View>
                 <Image style={styles.picture} source={img}/>
             </TouchableOpacity>
         )}
@@ -33,10 +36,20 @@ const styles = StyleSheet.create({
         borderLeftColor: '#000',
         borderLeftWidth: 1
     },
+    info: {
+        display: 'flex',
+        width: '50%',
+        height: 150,
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    },
     picture: {
         width: 150,
         height: 150,
         resizeMode: 'contain'
+    },
+    title: {
+        textAlign: 'center'
     }
 })
 

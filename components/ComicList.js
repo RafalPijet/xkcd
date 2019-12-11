@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, ScrollView, Dimensions, StyleSheet} from 'react-native';
 import axios from 'axios';
 import ListItem from './ListItem';
 import Header from './Header';
@@ -28,7 +28,10 @@ class ComicList extends React.Component {
       let res = await axios.get(`${cors}${url}${counter}/${nextUrl}`);
       let item = {
         title: res.data.title,
-        img: res.data.img
+        img: res.data.img,
+        day: res.data.day,
+        month: res.data.month,
+        year: res.data.year
       }
       this.setState({content: [...this.state.content, item]});
       counter++;
@@ -43,14 +46,22 @@ class ComicList extends React.Component {
       return <Loading amount={content.length}/>
     } else {
       return (
-          <View>
-            <Header refresh={getImages} hide={true} navigation={this.props.navigation}/>
-            {content.map(item => {
-              return <ListItem navigation={this.props.navigation} title={item.title} img={item.img}/>
-            })}
+          <View style={styles.main}>
+            <Header refresh={getImages} isRefresh={true} navigation={this.props.navigation}/>
+            <ScrollView style={styles.list}>
+              {content.map(item => {
+                return <ListItem navigation={this.props.navigation} title={item.title} img={item.img} day={item.day} month={item.month} year={item.year}/>
+              })}
+            </ScrollView>
           </View>
       )}
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    height: Dimensions.get('window').height - 100
+  }
+})
 
 export default ComicList;

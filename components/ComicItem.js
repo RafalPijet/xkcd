@@ -7,7 +7,7 @@ class ComicItem extends React.Component {
     const {params} = this.props.navigation.state;
     return (
         <View style={styles.container}>
-          <Header hide={false} navigation={this.props.navigation}/>
+          <Header isRefresh={false} navigation={this.props.navigation}/>
           <Image style={styles.backgroundImage} source={{uri: params.img}}/>
         </View>
     )

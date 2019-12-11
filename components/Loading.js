@@ -3,13 +3,13 @@ import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import Header from './Header';
 
 const Loading = props => (
-  <View>
-    <Header hide={true}/>
-    <Text style={styles.counter}>{props.amount}</Text>
-    <View style={styles.container}>
-      <Text style={styles.title}>Loading...</Text>
-    </View>   
-  </View>
+    <View>
+      <Header isRefresh={true}/>
+      <Text style={styles.counter}>{props.amount + 1}</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Loading...</Text>
+      </View>
+    </View>
 )
 
 const window = Dimensions.get('window');
