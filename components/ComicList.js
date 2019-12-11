@@ -4,6 +4,7 @@ import axios from 'axios';
 import ListItem from './ListItem';
 import Header from './Header';
 import Loading from './Loading';
+import Alert from './Alert';
 
 class ComicList extends React.Component {
   state = {
@@ -11,7 +12,9 @@ class ComicList extends React.Component {
     cors: 'https://cors-anywhere.herokuapp.com/',
     url: 'http://xkcd.com/',
     nextUrl: 'info.0.json',
-    content: []
+    content: [],
+    isError: false,
+    errorContent: ''
   };
 
   componentDidMount() {
@@ -19,31 +22,39 @@ class ComicList extends React.Component {
   }
 
   getImages = async () => {
-    const {cors, url, last, nextUrl} = this.state;
-    this.setState({content: []});
-    let res = await axios.get(`${cors}${url}${nextUrl}`);
-    await this.setState({last: res.data.num});
-    let counter = this.state.last - 7;
-    while (counter <= this.state.last) {
-      let res = await axios.get(`${cors}${url}${counter}/${nextUrl}`);
-      let item = {
-        title: res.data.title,
-        img: res.data.img,
-        day: res.data.day,
-        month: res.data.month,
-        year: res.data.year
+    const {cors, url, last, nextUrl, content, isError} = this.state;
+    content.length ? this.setState({content: []}) : '';
+    this.state.isError ? this.setState({isError: false}) : '';
+
+    try {
+      let res = await axios.get(`${cors}${url}${nextUrl}`);
+      await this.setState({last: res.data.num});
+      let counter = this.state.last - 7;
+      while (counter <= this.state.last) {
+        let res = await axios.get(`${cors}${url}${counter}/${nextUrl}`);
+        let item = {
+          title: res.data.title,
+          img: res.data.img,
+          day: res.data.day,
+          month: res.data.month,
+          year: res.data.year
+        }
+        this.setState({content: [...this.state.content, item]});
+        counter++;
       }
-      this.setState({content: [...this.state.content, item]});
-      counter++;
+    } catch (err) {
+      this.setState({isError: true, errorContent: err.message})
     }
   };
 
   render() {
-    const {content} = this.state;
+    const {content, errorContent} = this.state;
     const {getImages} = this;
 
-    if (this.state.content.length !== 8) {
+    if (this.state.content.length !== 8 && !this.state.isError) {
       return <Loading amount={content.length}/>
+    } else if (!content.length && this.state.isError) {
+      return <Alert refresh={getImages} error={errorContent}/>
     } else {
       return (
           <View style={styles.main}>
